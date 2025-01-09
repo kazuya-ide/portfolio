@@ -1,4 +1,4 @@
-// src/components/WordPressPosts.tsx
+// app/WordPressPosts.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
