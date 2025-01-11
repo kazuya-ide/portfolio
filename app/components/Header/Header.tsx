@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
+
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isHeaderTransparent, setIsHeaderTransparent] = useState(false);
@@ -34,9 +35,10 @@ export default function Header() {
             }`}
         >
             <div className="container mx-auto flex justify-between items-center px-4">
-              <Link href="/" className={`text-xl font-bold text-gray-900 transition-colors duration-300 ${isHeaderTransparent ? 'hidden md:block' : ''}`}>
-                <div>My Portfolio</div>
-             </Link>
+                <Link href="/" className={`flex items-center gap-2 text-xl font-bold text-gray-900 transition-colors duration-300 ${isHeaderTransparent ? 'hidden md:block' : ''}`}>
+                    
+                    <div>My Portfolio</div>
+                </Link>
 
                 <nav className={`hidden md:flex items-center gap-4 ${isHeaderTransparent ? 'hidden' : ''}`}>
                     <Link href="/about" className="py-2 px-4 text-gray-700 hover:text-blue-500  transition-colors duration-300">

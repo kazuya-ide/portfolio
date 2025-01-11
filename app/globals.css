@@ -2,3 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+.logo-container > img {
+    width: auto;
+    height: auto;
+  }

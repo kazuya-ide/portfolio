@@ -1,4 +1,3 @@
-// app/WordPressPosts.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -21,6 +20,7 @@ interface Post {
             source_url: string;
         }[]
     };
+   categories: number[];
 }
 
 
@@ -116,6 +116,7 @@ const WordPressPosts = () => {
                                         className="object-cover rounded-t-lg"
                                          sizes="(max-width: 768px) 100vw, 33vw"
                                         style={{objectFit: 'cover'}}
+                                         priority  // priority属性を追加
                                       />
                                 </button>
                             )}

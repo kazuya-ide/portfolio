@@ -1,4 +1,4 @@
-// src/components/PostModal.tsx
+// app/PostModal.tsx
 
 
 interface Post {

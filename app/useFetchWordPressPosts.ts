@@ -1,4 +1,3 @@
-// src/hooks/useFetchWordPressPosts.ts
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -17,10 +16,16 @@ interface Post {
             source_url: string;
         }[]
     };
+    categories: number[];
 }
 
+interface Category {
+  id: number;
+  name: string;
+}
 const useFetchWordPressPosts = () => {
   const [posts, setPosts] = useState<Post[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,6 +38,13 @@ const useFetchWordPressPosts = () => {
                   setLoading(false);
                   return;
               }
+              
+                const categoriesResponse = await fetch(`${apiUrl}/wp/v2/categories`);
+              if (!categoriesResponse.ok) {
+                 throw new Error(`カテゴリAPIリクエストに失敗しました: ${categoriesResponse.status}`);
+                }
+             const categoriesData = await categoriesResponse.json() as Category[];
+                setCategories(categoriesData);
 
               const response = await fetch(
                   `${apiUrl}/wp/v2/posts?_embed`
@@ -40,8 +52,14 @@ const useFetchWordPressPosts = () => {
               if (!response.ok) {
                   throw new Error(`APIリクエストに失敗しました: ${response.status}`);
               }
-              const data: Post[] = await response.json();
-              setPosts(data);
+              const data = await response.json() as Post[];
+
+              //カテゴリを配列に格納
+              const postsWithCategories = data.map(post => ({
+                ...post,
+                categories: post.categories
+             }));
+                setPosts(postsWithCategories);
           } catch (err: unknown) {
               if (err instanceof Error) {
                   setError(err.message || 'データの取得に失敗しました。');
@@ -56,7 +74,7 @@ const useFetchWordPressPosts = () => {
       fetchPosts();
   }, []);
 
-    return {posts, loading, error};
+    return {posts, categories, loading, error};
 };
 
 export default useFetchWordPressPosts;
