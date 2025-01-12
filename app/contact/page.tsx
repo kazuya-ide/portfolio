@@ -1,8 +1,11 @@
+"use client";
+
+import ContactSection from "@/app/components/ContactSection";
+
 export default function ContactPage() {
-    return (
-        <div>
-            <h1>About</h1>
-            <p>This is the about page.</p>
-        </div>
-    );
-  }
+  return (
+    <div>
+      <ContactSection />
+    </div>
+  );
+}

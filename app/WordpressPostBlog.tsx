@@ -36,7 +36,7 @@ const WordPressPostBlog = () => {
                 }
 
                 const response = await fetch(
-                    `${apiUrl}/wp/v2/blog?_embed&per_page=7`
+                    `${apiUrl}/wp/v2/blog?_embed&per_page=100`
                 );
                 if (!response.ok) {
                     throw new Error(`APIリクエストに失敗しました: ${response.status}`);
@@ -65,8 +65,7 @@ const WordPressPostBlog = () => {
         return <p>Error: {error}</p>;
     }
 
-    const displayedPosts = posts.slice(0, 6);
-    const hasMore = posts.length > 6;
+    const hasMore = posts.length > 0;
 
   const truncateText = (text: string, maxLength: number) => {
       if (!text) return '';
@@ -97,7 +96,7 @@ const WordPressPostBlog = () => {
                 </p>
            </div>
         <div className="mt-11 grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {displayedPosts.map((post) => (
+          {posts.map((post) => (
             <div key={post.id} className="rounded-lg border bg-card text-card-foreground shadow-sm w-full">
               {post._embedded && post._embedded['wp:featuredmedia'] && post._embedded['wp:featuredmedia'][0] && (
                <div className="aspect-video w-full relative">

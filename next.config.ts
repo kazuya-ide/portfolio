@@ -1,9 +1,8 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
-    domains: ['project1.ai-aozora.jp'],
-  },/* config options here */
+      unoptimized: true,
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
