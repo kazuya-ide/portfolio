@@ -1,27 +1,14 @@
-'use client';
+"use client";
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
-
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isHeaderTransparent, setIsHeaderTransparent] = useState(false);
+
 
     useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY > 100) {
-                setIsHeaderTransparent(true);
-            } else {
-                setIsHeaderTransparent(false);
-            }
-        };
 
-        window.addEventListener('scroll', handleScroll);
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
     }, []);
 
     const toggleMenu = () => {
@@ -30,17 +17,15 @@ export default function Header() {
 
     return (
         <header
-            className={`fixed top-0 left-0 w-full z-50 transition-colors duration-300 ${
-                isHeaderTransparent ? 'bg-transparent' : 'bg-white'
-            }`}
+            className={`fixed top-0 left-0 w-full z-50 transition-colors duration-300 bg-transparent`}
         >
             <div className="container mx-auto flex justify-between items-center px-4">
-                <Link href="/" className={`flex items-center gap-2 text-xl font-bold text-gray-900 transition-colors duration-300 ${isHeaderTransparent ? 'hidden md:block' : ''}`}>
+                <Link href="/" className={`flex items-center gap-2 text-xl font-bold text-gray-900 transition-colors duration-300`}>
                     
                     <div>My Portfolio</div>
                 </Link>
 
-                <nav className={`hidden md:flex items-center gap-4 ${isHeaderTransparent ? 'hidden' : ''}`}>
+                <nav className={`hidden md:flex items-center gap-4`}>
                     <Link href="/about" className="py-2 px-4 text-gray-700 hover:text-blue-500  transition-colors duration-300">
                         About
                     </Link>
@@ -70,7 +55,7 @@ export default function Header() {
                                 viewBox="0 0 24 24"
                                 strokeWidth={1.5}
                                 stroke="currentColor"
-                                className={`w-6 h-6 ${isHeaderTransparent ? 'text-black' : 'text-gray-900'} ${
+                                className={`w-6 h-6 text-gray-900 ${
                                     isMenuOpen ? 'hidden' : 'block' // Show hamburger menu if closed
                                 }`}
                             >
@@ -82,7 +67,7 @@ export default function Header() {
                                     viewBox="0 0 24 24"
                                     strokeWidth={1.5}
                                     stroke="currentColor"
-                                    className={`w-6 h-6 ${isHeaderTransparent ? 'text-black' : 'text-gray-900'} ${
+                                    className={`w-6 h-6 text-gray-900 ${
                                         isMenuOpen ? 'block' : 'hidden' // Show close icon if open
                                     }`}
                                 >

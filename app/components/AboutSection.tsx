@@ -7,7 +7,6 @@ import { motion, useAnimation } from 'framer-motion';
 import { useEffect,  useState, useLayoutEffect } from 'react';
 import React from 'react';
 
-
 const AboutSection = () => {
     const [isClient, setIsClient] = useState(false);
   const containerVariants = {
@@ -69,15 +68,17 @@ const AboutSection = () => {
       animate="visible"
       suppressHydrationWarning={true}
     >
-        <div className="absolute inset-0 z-0 opacity-40">
-              <Image
-                src="/ファビコン48.jpg"
-                alt="背景画像"
-                fill
-                style={{objectFit: "cover"}}
-                priority
-            />
-         </div>
+        <motion.div
+            style={{position:"fixed", top:0,left:0,right:0,bottom:0, zIndex:0,opacity:0.4}}
+           >
+                <Image
+                    src="/ファビコン48.jpg"
+                    alt="背景画像"
+                   fill
+                    style={{objectFit: "cover"}}
+                  priority
+                />
+         </motion.div>
         
       <div className="container max-w-7xl mx-auto relative z-10">
         <motion.h2
@@ -117,25 +118,35 @@ const AboutSection = () => {
                  ))}
             </motion.p>
          </div>
-            <div className="mt-4 flex items-center">
-               <motion.a href={"#"} variants={linkVariants} whileHover="hover" className="mr-4 hover:text-blue-500">
-                  <Link href={"#"} >
-                      <FaTwitter size={24} />
-                     <span className="sr-only">Twitter</span>
-                 </Link>
-            </motion.a>
-              <motion.a href={"#"} variants={linkVariants} whileHover="hover"  className="mr-4 hover:text-blue-500">
-                  <Link href={"#"} >
+             <div className="mt-4 flex items-center">
+              <motion.div 
+                   variants={linkVariants}
+                whileHover="hover"
+                className="mr-4 hover:text-blue-500"
+             >
+                 <Link href={"#"} >
+                    <FaTwitter size={24} />
+                    <span className="sr-only">Twitter</span>
+                  </Link>
+                </motion.div>
+              <motion.div
+                   variants={linkVariants}
+                whileHover="hover"
+                 className="mr-4 hover:text-blue-500">
+                <Link href={"#"} >
                       <FaGithub size={24} />
                     <span className="sr-only">GitHub</span>
                   </Link>
-               </motion.a>
-              <motion.a href={"#"} variants={linkVariants} whileHover="hover"  className="hover:text-blue-500">
-               <Link href={"#"} >
+              </motion.div>
+                <motion.div
+                     variants={linkVariants}
+                whileHover="hover"
+                className="hover:text-blue-500">
+                  <Link href={"#"} >
                    <FaLinkedin size={24} />
                  <span className="sr-only">LinkedIn</span>
                   </Link>
-               </motion.a>
+               </motion.div>
             </div>
           </motion.div>
         </div>

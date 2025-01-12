@@ -62,8 +62,8 @@ const ContactSection = () => {
           <p className="text-gray-600 text-center mb-8">
             ご質問やご依頼など、お気軽にご連絡ください。
           </p>
-          <div className="flex justify-center">
-              <form className="w-full max-w-lg" onSubmit={handleSubmit}>
+          <div className="flex justify-center px-4 sm:px-8 md:px-12 lg:px-20"> {/* ここを追加 */}
+              <form className="w-full max-w-2xl" onSubmit={handleSubmit}> {/* ここを変更 */}
           <div className="mb-4 relative">
              <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">
                お名前
@@ -127,7 +127,7 @@ const ContactSection = () => {
                disabled={formStatus === 'loading'}
             >
                {formStatus === 'loading' ? (
-                        <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white" />
+                        <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white" style={{borderLeftColor: 'transparent', borderRightColor: 'transparent'}} />
                         ) : (
                         <>
                             送信
