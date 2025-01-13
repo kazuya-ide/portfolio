@@ -1,3 +1,4 @@
+/* globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,3 +7,17 @@
     width: auto;
     height: auto;
   }
+  /* globals.css */
+footer {
+  /* background-color: #f0f0f0; このような設定があれば削除 */
+  background-color: transparent; /* 透明にする設定 */
+}
+
+/* globals.css */
+html {
+  background-color: transparent; /* html要素の背景を透明に設定 */
+}
+
+body {
+   background-color: transparent;
+}

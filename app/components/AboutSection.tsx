@@ -1,8 +1,6 @@
 "use client";
 
 import Image from 'next/image';
-import Link from 'next/link';
-import { FaTwitter, FaGithub, FaLinkedin } from 'react-icons/fa';
 import { motion, useAnimation } from 'framer-motion';
 import { useEffect,  useState, useLayoutEffect } from 'react';
 import React from 'react';
@@ -29,12 +27,6 @@ const AboutSection = () => {
   const textVariants = {
     hidden: { x: -50, opacity: 0 },
     visible: { x: 0, opacity: 1, transition: { duration: 0.6, ease: 'easeInOut' } },
-  };
-
-  const linkVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-    hover: { scale: 1.1, transition: { duration: 0.3 } },
   };
 
   const textAnimationControls = useAnimation();
@@ -72,7 +64,7 @@ const AboutSection = () => {
             style={{position:"fixed", top:0,left:0,right:0,bottom:0, zIndex:0,opacity:0.4}}
            >
                 <Image
-                    src="/ファビコン48.jpg"
+                    src="/5.png"
                     alt="背景画像"
                    fill
                     style={{objectFit: "cover"}}
@@ -82,7 +74,7 @@ const AboutSection = () => {
         
       <div className="container max-w-7xl mx-auto relative z-10">
         <motion.h2
-          className="text-3xl font-bold mb-8 text-center"
+          className="text-3xl font-bold mb-12 text-center"
           variants={textVariants}
         >
           自己紹介
@@ -101,9 +93,9 @@ const AboutSection = () => {
           >
            <div style={{ display: 'inline-block' }}>
             <motion.p
-              className="text-gray-900 mb-6"
+              className="text-gray-900 mb-12 text-3xl font-bold "
             >
-                 {Array.from("「あなた」の想いが伝わる、そんなウェブサイトを。").map((char, index) => (
+                 {Array.from("「あなた」の世界観を伝える").map((char, index) => (
                   
                     <motion.span
                     key={index}
@@ -118,36 +110,6 @@ const AboutSection = () => {
                  ))}
             </motion.p>
          </div>
-             <div className="mt-4 flex items-center">
-              <motion.div 
-                   variants={linkVariants}
-                whileHover="hover"
-                className="mr-4 hover:text-blue-500"
-             >
-                 <Link href={"#"} >
-                    <FaTwitter size={24} />
-                    <span className="sr-only">Twitter</span>
-                  </Link>
-                </motion.div>
-              <motion.div
-                   variants={linkVariants}
-                whileHover="hover"
-                 className="mr-4 hover:text-blue-500">
-                <Link href={"#"} >
-                      <FaGithub size={24} />
-                    <span className="sr-only">GitHub</span>
-                  </Link>
-              </motion.div>
-                <motion.div
-                     variants={linkVariants}
-                whileHover="hover"
-                className="hover:text-blue-500">
-                  <Link href={"#"} >
-                   <FaLinkedin size={24} />
-                 <span className="sr-only">LinkedIn</span>
-                  </Link>
-               </motion.div>
-            </div>
           </motion.div>
         </div>
       </div>

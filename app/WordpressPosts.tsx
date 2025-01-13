@@ -1,4 +1,3 @@
-// app/components/WordPressPosts.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -96,18 +95,18 @@ const WordPressPosts = () => {
                 </div>
                 <div className="mt-11 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {displayedPosts?.map((post) => (
-                        <div key={post.id} className="rounded-lg border  text-gray-900 dark:text-white shadow-sm bg-transparent w-full flex flex-col">
+                        <div key={post.id} className="rounded-lg text-gray-900 dark:text-white shadow-sm bg-transparent w-full flex flex-col overflow-hidden">
                             {post._embedded && post._embedded['wp:featuredmedia'] && post._embedded['wp:featuredmedia'][0] && (
                                 <button
                                    onClick={() => handleReadMoreClick(post)}
-                                     className="w-full  relative aspect-square" //  aspect-squareに変更
+                                     className="w-full relative aspect-square"
                                   >
                                       <Image
                                         src={post._embedded['wp:featuredmedia'][0].source_url}
                                         alt={post.title.rendered}
                                         fill
-                                        className="object-cover rounded-t-lg"
-                                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" // sizes調整
+                                        className="object-cover rounded-lg"
+                                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                         style={{objectFit: 'cover'}}
                                          priority
                                       />
