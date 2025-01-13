@@ -161,7 +161,7 @@ export default function ProjectsPage() {
         transition={{ duration: 1, ease: "easeInOut" }}
       >
         <Image
-          src="/2.png"
+          src="/1.png"
           alt="背景画像"
           fill
           style={{ objectFit: "cover" }}
