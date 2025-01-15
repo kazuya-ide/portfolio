@@ -38,7 +38,8 @@ const useFetchWordPressPosts = () => {
                   setLoading(false);
                   return;
               }
-              
+                // const apiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL + '/alternative_path'; // API URLを変更
+                // const categoriesResponse = await fetch(`${apiUrl}/wp/v2/categories?per_page=5`); // 取得するカテゴリの数を変更
                 const categoriesResponse = await fetch(`${apiUrl}/wp/v2/categories`);
               if (!categoriesResponse.ok) {
                  throw new Error(`カテゴリAPIリクエストに失敗しました: ${categoriesResponse.status}`);
@@ -48,6 +49,8 @@ const useFetchWordPressPosts = () => {
 
               const response = await fetch(
                   `${apiUrl}/wp/v2/posts?_embed`
+                   // `${apiUrl}/wp/v2/posts?_embed&per_page=5` // 取得する記事の数を変更
+                  //  `${apiUrl}/wp/v2/posts?_embed&_fields=id,title,content` // 取得するフィールドを変更
               );
               if (!response.ok) {
                   throw new Error(`APIリクエストに失敗しました: ${response.status}`);
@@ -60,6 +63,7 @@ const useFetchWordPressPosts = () => {
                 categories: post.categories
              }));
                 setPosts(postsWithCategories);
+                // setPosts([]); // 空の配列を返す
           } catch (err: unknown) {
               if (err instanceof Error) {
                   setError(err.message || 'データの取得に失敗しました。');

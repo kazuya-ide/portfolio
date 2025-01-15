@@ -1,4 +1,6 @@
-import { FaJs, FaReact, FaCss3Alt, FaHtml5, FaWordpress, FaPencilRuler, FaServer } from 'react-icons/fa';
+"use client";
+
+import { FaJs, FaReact, FaCss3Alt, FaHtml5, FaWordpress, FaServer } from 'react-icons/fa';
 import { SiNextdotjs } from "react-icons/si"
 
 const SkillsSection = () => {
@@ -34,12 +36,6 @@ const SkillsSection = () => {
       category: "フロントエンド"
     },
     {
-      name: "UI/UX",
-      level: 70,
-      icon: <FaPencilRuler size={30} />,
-      category: "デザイン"
-    },
-    {
       name: "WordPress",
       level: 80,
       icon: <FaWordpress size={30} />,
@@ -55,31 +51,33 @@ const SkillsSection = () => {
 
   const categories = [...new Set(skills.map((skill) => skill.category))];
 
+  const filteredCategories = categories.filter(category => category !== 'デザイン');
+
   return (
-    <section className="py-16 bg-white"> {/* ここを修正 */}
+    <section className="py-16">
       <div className="container max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold mb-8 text-center">スキル</h2>
-          <div className="flex flex-col md:flex-row gap-8">
-              {categories.map((category) => (
-                 <div key={category} className="md:w-1/2">
-                   <h3 className="text-2xl font-semibold mb-4">{category}</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <h2 className="text-3xl font-bold mb-8 text-center text-black">スキル</h2>
+          <div className="flex flex-col gap-8">
+              {filteredCategories.map((category) => (
+                 <div key={category} className="mb-8">
+                   <h3 className="text-2xl font-semibold mb-4 text-black">{category}</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {skills
                         .filter((skill) => skill.category === category)
                             .map((skill, index) => (
                                 <div
                                   key={index}
-                                  className="bg-gray-50 p-6 rounded shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col items-center justify-center" // ここを修正
+                                   className="p-6 rounded shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col items-center justify-center bg-white/30 backdrop-blur-sm" // 透明度を30%に変更
                                 >
                                   <div className="mb-4">{skill.icon}</div>
-                                   <h3 className="text-xl font-medium mb-2">{skill.name}</h3>
+                                   <h3 className="text-xl font-medium mb-2 text-black">{skill.name}</h3>
                                    <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2 mb-4">
                                         <div
                                             className="bg-blue-500 h-2.5 rounded-full"
                                            style={{ width: `${skill.level}%` }}
                                        />
                                     </div>
-                                    <p className="text-gray-600 text-sm text-center">{skill.level}%</p>
+                                    <p className=" text-sm text-center text-black">{skill.level}%</p>
                                 </div>
                             ))}
                         </div>

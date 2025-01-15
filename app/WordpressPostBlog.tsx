@@ -92,19 +92,20 @@ const WordPressPostBlog = () => {
         <section className="py-32">
             <div className="container max-w-7xl mx-auto">
                 <div className="flex items-center justify-between text-sm">
-
-                    <a href="#" className="hover:text-gray-800 hover:underline">Learn more<svg xmlns="http://www.w3.org/2000/svg"
+                     <a href="#" className="hover:text-gray-800 hover:underline">もっと見る
+                        <svg xmlns="http://www.w3.org/2000/svg"
                         width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
                         strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-right ml-2 inline-block size-4">
                         <path d="m9 18 6-6-6-6"></path>
-                    </svg></a>
+                        </svg>
+                        </a>
                 </div>
                 <div data-orientation="horizontal" role="none" className="shrink-0 bg-border h-[1px] w-full mb-8 mt-3"></div>
                 <div className="flex flex-col justify-between gap-6 md:flex-row">
-                    <h2 className="text-3xl font-medium md:w-1/2">What you can do with our blog posts?</h2>
-                    <p className="md:w-1/2">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Molestiae praesent, ad ullam quis cupiditate atque maxime alias eaque repellendus perferendis, nemo repudiandae.
+                    <h2 className="text-3xl font-medium md:w-1/2 text-black">ブログ記事でできること</h2>
+                    <p className="md:w-1/2 text-black">
+                    ブログでは、ウェブサイト制作に関する様々な情報を個人の振り返りメモのように記事にしています
+                    
                     </p>
                 </div>
                 <div className="mt-11 grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -122,15 +123,15 @@ const WordPressPostBlog = () => {
                                 </div>
                             )}
                             <div className="p-5">
-                                <p className="mb-1 font-medium">{truncateText(post.title.rendered, 50)}</p>
+                                <p className="mb-1 font-medium text-black">{truncateText(post.title.rendered, 50)}</p>
                             </div>
                         </div>
                     ))}
                 </div>
                 {hasMore && (
                     <div className="mt-4 text-center">
-                        <Link href="/blog" className="text-blue-500 hover:underline">
-                            More Posts
+                        <Link href="/blog" className=" hover:underline text-black">
+                            もっと記事を見る
                         </Link>
                     </div>
                 )}
@@ -141,8 +142,8 @@ const WordPressPostBlog = () => {
                         <button onClick={handleCloseModal} className="absolute top-2 right-2 cursor-pointer">
                             <XMarkIcon className="h-6 w-6 text-gray-500" />
                         </button>
-                        <h2 className="text-2xl font-bold mb-4">{selectedPost.title.rendered}</h2>
-                        <div dangerouslySetInnerHTML={{ __html: selectedPost.content.rendered }} />
+                        <h2 className="text-2xl font-bold mb-4 text-black">{selectedPost.title.rendered}</h2>
+                        <div className="text-black" dangerouslySetInnerHTML={{ __html: selectedPost.content.rendered }} />
                     </div>
                 </div>
             )}

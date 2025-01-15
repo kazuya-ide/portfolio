@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState, useLayoutEffect } from "react";
-import { motion, useTransform, useScroll } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { FaTwitter, FaGithub, FaLinkedin } from "react-icons/fa";
@@ -38,8 +38,7 @@ const AboutPage = () => {
       transition: { duration: 0.4, delay: i * 0.1, ease: "easeInOut" },
     }),
   };
-  const { scrollYProgress } = useScroll();
-  const blur = useTransform(scrollYProgress, [0, 0.5], [0, 20]);
+  
 
   useLayoutEffect(() => {
     setIsClient(true);
@@ -82,31 +81,30 @@ const AboutPage = () => {
         suppressHydrationWarning={true}
       >
         <motion.div
-          className="absolute inset-0 z-0 opacity-20"
-          style={{ filter: `blur(${blur}px)` }}
+          className="absolute inset-0 z-0 opacity-50" // opacity-20 を追加
         >
-          <Image
-            src="/2.png"
-            alt="背景画像"
-            fill
-            style={{ objectFit: "cover" }}
-            priority
-          />
+            <Image
+              src="/2.png"
+              alt="背景画像"
+              fill
+              style={{ objectFit: "cover" }}
+              priority
+            />
         </motion.div>
       </motion.section>
       <div
-        className="container relative max-w-7xl mx-auto py-16 text-gray-900 dark:text-white text-center z-10"
+        className="container relative max-w-7xl mx-auto py-16 text-gray-900 text-center z-10"
         ref={aboutRef}
       >
         <motion.h2
-          className="text-3xl font-bold mb-8"
+          className="text-3xl font-bold mb-8 text-gray-900"
           variants={textVariants}
         >
           自己紹介
         </motion.h2>
         <div className="mb-8">
           <motion.p
-            className="text-gray-700 dark:text-gray-300 mb-4"
+            className="text-gray-900 mb-4"
             variants={textVariants}
           >
             はじめまして、井手和弥と申します。
@@ -114,7 +112,7 @@ const AboutPage = () => {
             Web開発者として、主にフロントエンド開発を担当しています。
           </motion.p>
           <motion.p
-            className="text-gray-700 dark:text-gray-300 mb-4"
+            className="text-gray-900 mb-4"
             variants={textVariants}
           >
             特に、React、Next.js を用いた開発が好きで、UI/UX デザインにも興味があります。
@@ -124,7 +122,7 @@ const AboutPage = () => {
             ユーザーにとって使いやすいウェブサイトを制作することに情熱を燃やしています。
           </motion.p>
           <motion.p
-            className="text-gray-700 dark:text-gray-300 mb-4"
+            className="text-gray-900 mb-4"
             variants={textVariants}
           >
             WordPress を使用した開発経験もあり、お客様のニーズに合わせたウェブサイト構築が可能です。
@@ -133,13 +131,13 @@ const AboutPage = () => {
           </motion.p>
         </div>
         <motion.h3
-          className="text-2xl font-bold mb-4"
+          className="text-2xl font-bold mb-4 text-gray-900"
           variants={textVariants}
         >
           主なスキル
         </motion.h3>
         <motion.ul
-          className="text-gray-700 dark:text-gray-300 mb-8 pl-6 list-none"
+          className="text-gray-900 mb-8 pl-6 list-none"
           variants={textVariants}
         >
           {[
@@ -157,7 +155,7 @@ const AboutPage = () => {
               key={skill}
               variants={listItemVariants}
               custom={index}
-              className="py-2 border-b border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 inline-block"
+              className="py-2 border-b border-gray-300  hover:bg-gray-100 transition-colors duration-200 inline-block text-gray-900"
               style={{ padding: "0 10px", width: "fit-content" }}
             >
               {skill}
@@ -165,20 +163,20 @@ const AboutPage = () => {
           ))}
         </motion.ul>
         <motion.h3
-          className="text-2xl font-bold mb-4"
+          className="text-2xl font-bold mb-4 text-gray-900"
           variants={textVariants}
         >
           今後の目標
         </motion.h3>
         <motion.p
-          className="text-gray-700 dark:text-gray-300 mb-4"
+          className="text-gray-900 mb-4"
           variants={textVariants}
         >
           今後は、バックエンド技術にも挑戦し、より幅広い開発ができるようにスキルアップを目指しています。
           <br /> また、チームでの開発経験を増やし、より高品質なウェブサイトを提供できるように努めてまいります。
         </motion.p>
         <motion.p
-          className="text-gray-700 dark:text-gray-300 mb-4"
+          className="text-gray-900 mb-4"
           variants={textVariants}
         >
           もし何かご質問やご依頼などございましたら、お気軽にお問い合わせください。

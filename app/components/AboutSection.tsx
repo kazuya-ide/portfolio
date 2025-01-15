@@ -1,12 +1,11 @@
 "use client";
 
-import Image from 'next/image';
 import { motion, useAnimation } from 'framer-motion';
-import { useEffect,  useState, useLayoutEffect } from 'react';
+import { useEffect, useState, useLayoutEffect } from 'react';
 import React from 'react';
 
 const AboutSection = () => {
-    const [isClient, setIsClient] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -27,6 +26,8 @@ const AboutSection = () => {
   const textVariants = {
     hidden: { x: -50, opacity: 0 },
     visible: { x: 0, opacity: 1, transition: { duration: 0.6, ease: 'easeInOut' } },
+   // visible: { x: 0, opacity: 1, transition: { duration: 1, type: "spring", stiffness: 100 } }, // アニメーションをspringに変更
+   //  hidden: { x: -100, opacity: 0 }, // hidden時のxの値を変更
   };
 
   const textAnimationControls = useAnimation();
@@ -36,82 +37,86 @@ const AboutSection = () => {
   }, []);
 
   useEffect(() => {
-    if(isClient){
-        const animateText = async () => {
-          await textAnimationControls.start((i) => ({
-            opacity: 1,
-            transition: {
-              duration: 0.05, // 各文字を表示する速さ
-              delay: i * 0.03, // 各文字の表示を少しずつ遅らせる
-            },
-          }));
-        };
-    
-        animateText();
+    if (isClient) {
+      const animateText = async () => {
+        await textAnimationControls.start((i) => ({
+          opacity: 1,
+          transition: {
+            duration: 0.05,
+            delay: i * 0.03,
+           // delay: i * 0.1, // delayの値を変更
+          },
+        }));
+      };
+
+      animateText();
     }
   }, [textAnimationControls, isClient]);
 
-
   return (
     <motion.section
-      className="relative py-16 bg-white overflow-hidden"
+      className="py-16 overflow-hidden"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
       suppressHydrationWarning={true}
+       // style={{ padding: '5rem 0' }} // paddingを変更
     >
-        <motion.div
-            style={{position:"fixed", top:0,left:0,right:0,bottom:0, zIndex:0,opacity:0.4}}
-           >
-                <Image
-                    src="/5.png"
-                    alt="背景画像"
-                   fill
-                    style={{objectFit: "cover"}}
-                  priority
-                />
-         </motion.div>
-        
+
       <div className="container max-w-7xl mx-auto relative z-10">
         <motion.h2
-          className="text-3xl font-bold mb-12 text-center"
+          className="text-8xl font-bold mb-12 text-center py-16"
+           //  className="text-5xl font-bold mb-12 text-center py-16" // h2のフォントサイズを変更
           variants={textVariants}
         >
-          自己紹介
+          Portfolio
         </motion.h2>
-        <div className="flex flex-col md:flex-row gap-8 items-center">
-          <motion.div
-            className="relative w-full md:w-1/3 rounded-full overflow-hidden"
-            variants={imageVariants}
-            whileHover="hover"
-          >
-            
-          </motion.div>
-          <motion.div
-            className="md:w-2/3 px-4 md:px-0"
-            variants={textVariants}
-          >
-           <div style={{ display: 'inline-block' }}>
-            <motion.p
-              className="text-gray-900 mb-12 text-3xl font-bold "
-            >
-                 {Array.from("「あなた」の世界観を伝える").map((char, index) => (
-                  
-                    <motion.span
-                    key={index}
-                    initial={{ opacity: 0 }}
-                    animate={textAnimationControls}
-                    custom={index}
-                    style={{ display: 'inline-block' }}
-                >
-                     { char === '\n' ? <br /> : char }
-                </motion.span>
 
-                 ))}
-            </motion.p>
-         </div>
+        <motion.div
+            className="md:w-2/3 px-4 md:px-0 mx-auto"
+            variants={textVariants}
+            style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}
+           //  style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}  // flexDirectionを変更
+          >
+            <motion.div
+              className="text-gray-900 mb-12 text-5xl font-bold py-6"
+              style={{ textAlign: 'center' }}
+              //  style={{ textAlign: 'right' }} // textAlignを変更
+            >
+              {
+                <>
+                  <div style={{ marginBottom: '2rem' }}>
+                      {Array.from("あなたの世界観を伝える").map((char, index) => (
+                      <motion.span
+                          key={index}
+                          initial={{ opacity: 0 }}
+                          animate={textAnimationControls}
+                          custom={index}
+                          style={{ display: 'inline-block' }}
+                            // style={{ display: 'block' }} // displayを変更
+                      >
+                          {char}
+                      </motion.span>
+                      ))}
+                  </div>
+                  <div>
+                      {Array.from("お手伝いをしたい").map((char, index) => (
+                      <motion.span
+                          key={index}
+                          initial={{ opacity: 0 }}
+                          animate={textAnimationControls}
+                          custom={index}
+                          style={{ display: 'inline-block' }}
+                          // style={{ display: 'inline' }} // displayを変更
+                      >
+                          {char}
+                      </motion.span>
+                      ))}
+                  </div>
+                </>
+              }
+            </motion.div>
           </motion.div>
-        </div>
       </div>
     </motion.section>
   );

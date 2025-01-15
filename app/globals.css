@@ -13,11 +13,3 @@ footer {
   background-color: transparent; /* 透明にする設定 */
 }
 
-/* globals.css */
-html {
-  background-color: transparent; /* html要素の背景を透明に設定 */
-}
-
-body {
-   background-color: transparent;
-}

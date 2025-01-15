@@ -1,4 +1,3 @@
-// app/projects/page.tsx
 "use client";
 
 import useFetchWordPressPosts from "@/app/useFetchWordPressPosts";
@@ -71,10 +70,10 @@ function Content({
       <div className="flex flex-col sm:flex-row items-center justify-between text-sm gap-4"></div>
       <div className="h-[1px] bg-border w-full mb-8 mt-3"></div>
       <div className="flex flex-col justify-between gap-6 lg:flex-row">
-        <h2 className="text-3xl font-medium lg:w-1/2">Projects</h2>
+        <h2 className="text-5xl font-medium lg:w-1/2">Projects</h2>
         <div className="mx-20">
-          <p className="lg:w-1/2 text-gray-600 break-words">
-            作ったものを載せてます、画像をクリックすると詳細がモーダルで表示されます
+          <p className="lg:w-1/2 text-bk break-words">
+            画像をクリックすると詳細がモーダルで表示されます
           </p>
         </div>
       </div>
@@ -84,7 +83,7 @@ function Content({
           className={`px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:border-blue-500 hover:text-blue-500 focus:outline-none ${
             selectedCategory === null
               ? "bg-blue-100 border-blue-500 text-blue-500"
-              : ""
+              : "bg-white text-gray-700" // 選択されていない時の背景色を追加
           }`}
         >
           All
@@ -96,7 +95,7 @@ function Content({
             className={`px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:border-blue-500 hover:text-blue-500 focus:outline-none ${
               selectedCategory === category.id
                 ? "bg-blue-100 border-blue-500 text-blue-500"
-                : ""
+                : "bg-white text-gray-700" // 選択されていない時の背景色を追加
             }`}
           >
             {category.name}
@@ -157,7 +156,7 @@ export default function ProjectsPage() {
       <motion.div
         style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 0 }}
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.4 }}
+        animate={{ opacity: 0.7 }}
         transition={{ duration: 1, ease: "easeInOut" }}
       >
         <Image

@@ -56,16 +56,16 @@ const ContactSection = () => {
 
 
     return (
-      <section className="py-16 bg-white">
+      <section className="py-16">
         <div className="container max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold mb-8 text-center">お問い合わせ</h2>
-          <p className="text-gray-600 text-center mb-8">
+          <p className="text-black text-center mb-8">
             ご質問やご依頼など、お気軽にご連絡ください。
           </p>
-          <div className="flex justify-center px-4 sm:px-8 md:px-12 lg:px-20"> {/* ここを追加 */}
-              <form className="w-full max-w-2xl" onSubmit={handleSubmit}> {/* ここを変更 */}
+          <div className="flex justify-center px-4 sm:px-8 md:px-12 lg:px-20">
+              <form className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <div className="mb-4 relative">
-             <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">
+             <label htmlFor="name" className="block text-black text-sm font-bold mb-2">
                お名前
                 </label>
               <div className="relative">
@@ -83,7 +83,7 @@ const ContactSection = () => {
                 {errorMessages.name && <p className="text-red-500 text-sm mt-1">{errorMessages.name}</p>}
               </div>
             <div className="mb-4 relative">
-                <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
+                <label htmlFor="email" className="block text-black text-sm font-bold mb-2">
                     メールアドレス
                 </label>
                 <div className="relative">
@@ -103,7 +103,7 @@ const ContactSection = () => {
             <div className="mb-4 relative">
               <label
                 htmlFor="message"
-                className="block text-gray-700 text-sm font-bold mb-2"
+                className="block text-black text-sm font-bold mb-2"
               >
                 メッセージ
               </label>
