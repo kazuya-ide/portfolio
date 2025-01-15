@@ -17,17 +17,10 @@ const AboutSection = () => {
     },
   };
 
-  const imageVariants = {
-    hidden: { scale: 0.8, opacity: 0 },
-    visible: { scale: 1, opacity: 1, transition: { duration: 0.8, ease: "easeInOut" } },
-    hover: { scale: 1.05, transition: { duration: 0.3, ease: "easeInOut" } },
-  };
 
   const textVariants = {
     hidden: { x: -50, opacity: 0 },
     visible: { x: 0, opacity: 1, transition: { duration: 0.6, ease: 'easeInOut' } },
-   // visible: { x: 0, opacity: 1, transition: { duration: 1, type: "spring", stiffness: 100 } }, // アニメーションをspringに変更
-   //  hidden: { x: -100, opacity: 0 }, // hidden時のxの値を変更
   };
 
   const textAnimationControls = useAnimation();
@@ -44,7 +37,6 @@ const AboutSection = () => {
           transition: {
             duration: 0.05,
             delay: i * 0.03,
-           // delay: i * 0.1, // delayの値を変更
           },
         }));
       };
@@ -60,13 +52,11 @@ const AboutSection = () => {
       initial="hidden"
       animate="visible"
       suppressHydrationWarning={true}
-       // style={{ padding: '5rem 0' }} // paddingを変更
     >
 
       <div className="container max-w-7xl mx-auto relative z-10">
         <motion.h2
-          className="text-8xl font-bold mb-12 text-center py-16"
-           //  className="text-5xl font-bold mb-12 text-center py-16" // h2のフォントサイズを変更
+          className="text-8xl font-bold mb-12 text-center py-16 text-black"
           variants={textVariants}
         >
           Portfolio
@@ -76,12 +66,10 @@ const AboutSection = () => {
             className="md:w-2/3 px-4 md:px-0 mx-auto"
             variants={textVariants}
             style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}
-           //  style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}  // flexDirectionを変更
           >
             <motion.div
-              className="text-gray-900 mb-12 text-5xl font-bold py-6"
+              className=" mb-12 text-5xl font-bold py-6 text-black"
               style={{ textAlign: 'center' }}
-              //  style={{ textAlign: 'right' }} // textAlignを変更
             >
               {
                 <>
@@ -92,8 +80,7 @@ const AboutSection = () => {
                           initial={{ opacity: 0 }}
                           animate={textAnimationControls}
                           custom={index}
-                          style={{ display: 'inline-block' }}
-                            // style={{ display: 'block' }} // displayを変更
+                          style={{ display: 'inline-block', color: 'black' }}
                       >
                           {char}
                       </motion.span>
@@ -106,8 +93,7 @@ const AboutSection = () => {
                           initial={{ opacity: 0 }}
                           animate={textAnimationControls}
                           custom={index}
-                          style={{ display: 'inline-block' }}
-                          // style={{ display: 'inline' }} // displayを変更
+                          style={{ display: 'inline-block', color: 'black' }}
                       >
                           {char}
                       </motion.span>

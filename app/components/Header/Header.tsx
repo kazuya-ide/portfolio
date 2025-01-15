@@ -100,10 +100,11 @@ export default function Header() {
                        <Link href="/contact" className="py-2 px-4 text-gray-700 hover:text-blue-500 transition-colors duration-300">
                             Contact
                         </Link>
-                         // <Link href="/alternative-path" className="py-2 px-4 text-gray-700 hover:text-blue-500  transition-colors duration-300">  LinkのURLを変更
-                         //    Other
-                      //   </Link>
+                         {/* <Link href="/alternative-path" className="py-2 px-4 text-gray-700 hover:text-blue-500  transition-colors duration-300">  LinkのURLを変更 */}
+                         {/*    Other */}
+                      {/*   </Link> */}
                     </nav>
+                   {/*  <div className="flex flex-col items-center gap-4 p-4 bg-gray-200" style={{ width: '50vw' }} >  モバイルメニューの幅を変更 */}
                 </div>
             </div>
         </header>
