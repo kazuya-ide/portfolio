@@ -42,14 +42,28 @@ const ContactSection = () => {
         }
       // 送信処理
         try {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-          setFormStatus('success');
+            const response = await fetch('/api/send-email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, email, message }),
+            });
 
-             setName('');
-             setEmail('');
-            setMessage('');
-        } catch {  // ここを修正
-            setFormStatus('error');
+             if (response.ok) {
+              setFormStatus('success');
+                  setName('');
+                    setEmail('');
+                    setMessage('');
+             } else {
+                 const errorData = await response.json();
+               console.error("送信エラー",errorData);
+                 setFormStatus('error');
+             }
+
+        } catch (error) {
+            console.error("通信エラー",error);
+             setFormStatus('error');
         }
 
     };
