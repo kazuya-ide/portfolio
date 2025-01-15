@@ -1,3 +1,4 @@
+// pages/contact/index.tsx
 "use client";
 
 import { useState } from 'react';
@@ -42,28 +43,27 @@ const ContactSection = () => {
         }
       // 送信処理
         try {
-            const response = await fetch('/api/send-email', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name, email, message }),
+           const response = await fetch('/api/send-email', {
+             method: 'POST',
+               headers: {
+                 'Content-Type': 'application/json',
+               },
+               body: JSON.stringify({ name, email, message }),
             });
 
-             if (response.ok) {
-              setFormStatus('success');
-                  setName('');
-                    setEmail('');
-                    setMessage('');
-             } else {
-                 const errorData = await response.json();
-               console.error("送信エラー",errorData);
-                 setFormStatus('error');
-             }
-
-        } catch (error) {
-            console.error("通信エラー",error);
-             setFormStatus('error');
+           if (response.ok) {
+             setFormStatus('success');
+                setName('');
+                  setEmail('');
+                 setMessage('');
+           } else {
+                const errorData = await response.json();
+                console.error("送信エラー",errorData);
+                setFormStatus('error');
+           }
+       } catch (error) {
+             console.error("通信エラー",error);
+            setFormStatus('error');
         }
 
     };
@@ -74,7 +74,8 @@ const ContactSection = () => {
         <div className="container max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold mb-8 text-center">お問い合わせ</h2>
           <p className="text-black text-center mb-8">
-            ご質問やご依頼など、お気軽にご連絡ください。
+            個人情報を伴うものはセキュリティ上メールにてお受けしております
+            <br/>LINEでのご依頼は基本的にお受けしておりません
           </p>
           <div className="flex justify-center px-4 sm:px-8 md:px-12 lg:px-20">
               <form className="w-full max-w-2xl" onSubmit={handleSubmit}>
@@ -149,7 +150,7 @@ const ContactSection = () => {
                        </>
                        )}
           </button>
-            {formStatus === 'success' && (
+             {formStatus === 'success' && (
                <p className="text-green-500 text-sm mt-2 text-center">送信が完了しました。</p>
               )}
                {formStatus === 'error' && (

@@ -1,11 +1,11 @@
 // app/page.tsx
-
 "use client";
-
 import WordPressPosts from "./WordpressPosts";
 import SkillsSection from "@/app/components/SkillsSection";
 import AboutSection from "@/app/components/AboutSection";
-import ContactSection from "@/app/components/ContactSection";
+import LineButton from "./components/LineButton";
+import ContactButton from "./components/ContactButton"; // ContactButton をインポート
+
 import { motion } from "framer-motion";
 import Image from "next/image";
 
@@ -28,8 +28,11 @@ export default function Home() {
         <AboutSection />
          <SkillsSection />
          <WordPressPosts />
-         <ContactSection />
        </div>
+     
+        <LineButton lineId="@755gjcjk" /> 
+
+        <ContactButton /> 
     </motion.div>
   );
 }
