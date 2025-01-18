@@ -1,7 +1,7 @@
-// app/components/LineButton.tsx
 "use client";
 
 import React from 'react';
+import Image from 'next/image'; // Image コンポーネントをインポート
 
 interface LineButtonProps {
   lineId: string;
@@ -16,10 +16,11 @@ const LineButton: React.FC<LineButtonProps> = ({ lineId }) => {
       </div>
       <div className="mb-[3%]">
         <a href={lineAddFriendUrl} target="_blank" rel="noopener noreferrer">
-            <img
+            <Image // img タグを Image コンポーネントに置き換え
             src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png"
             alt="LINEで友だち追加"
-             height="36"
+            width={144} // 幅を定義 (画像の実際の幅に合わせて調整)
+            height={36} // 高さを定義 (画像の実際の高さに合わせて調整)
            />
         </a>
       </div>

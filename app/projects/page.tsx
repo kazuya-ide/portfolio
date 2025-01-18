@@ -1,183 +1,350 @@
-"use client";
+'use client';
 
 import useFetchWordPressPosts from "@/app/useFetchWordPressPosts";
 import Image from "next/image";
-import PostModal from "@/app/PostModal";
-import { useState, Suspense } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef, Suspense, useCallback } from "react";
+import styled from 'styled-components';
 
 interface Post {
-  id: number;
-  title: {
-    rendered: string;
-  };
-  content: {
-    rendered: string;
-  };
-  featured_media: number;
-  _embedded?: {
-    "wp:featuredmedia"?: {
-      source_url: string;
-    }[];
-  };
-  categories: number[];
+    id: number;
+    title: {
+        rendered: string;
+    };
+    content: {
+        rendered: string;
+    };
+    featured_media: number;
+    _embedded?: {
+        'wp:featuredmedia'?: {
+            source_url: string;
+        }[]
+    };
+    categories: number[];
 }
 
-export interface Category {
-  id: number;
-  name: string;
+interface Category {
+    id: number;
+    name: string;
 }
+
+
+const ModalBackdrop = styled.div`
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 5vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+
+    &.modal-open {
+        opacity: 1;
+        pointer-events: auto;
+    }
+`;
+
+const ModalContent = styled.div`
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    width: 90vw;
+    max-height: 90vh;
+    position: relative;
+    max-width: 4xl;
+    overflow-y: auto;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+
+    &.modal-content-open {
+        transform: translateY(0);
+        opacity: 1;
+    }
+`;
+
+const PostModal: React.FC<{ post: Post; onClose: () => void; }> = ({ post, onClose }) => {
+    const modalRef = useRef<HTMLDivElement>(null);
+    const modalContentRef = useRef<HTMLDivElement>(null);
+    const [isOpen, setIsOpen] = useState(true);
+
+    const handleClose = useCallback(() => {
+        if (modalRef.current) {
+            modalRef.current.classList.remove("modal-open");
+        }
+        if (modalContentRef.current) {
+            modalContentRef.current.classList.remove("modal-content-open");
+        }
+
+        const onTransitionEnd = () => {
+            setIsOpen(false);
+            onClose();
+            if(modalContentRef.current){
+              modalContentRef.current.removeEventListener('transitionend', onTransitionEnd);
+            }
+            document.body.style.overflow = "";
+        };
+
+        if(modalContentRef.current){
+           modalContentRef.current.addEventListener('transitionend', onTransitionEnd);
+         }
+    }, [setIsOpen, onClose]);
+
+
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+            if (!modalRef.current) return;
+            if (event.target instanceof Node) {
+                if (!modalRef.current.contains(event.target)) {
+                    handleClose();
+                } else if (
+                    (event.target as Element)?.closest?.(
+                        '[aria-label="Close Modal"]'
+                    )
+                ) {
+                    handleClose();
+                }
+            }
+        };
+
+        if (isOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+            document.addEventListener("touchstart", handleClickOutside);
+            document.body.style.overflow = "hidden";
+
+            if (modalRef.current) {
+                modalRef.current.classList.add("modal-open");
+             }
+
+            if(modalContentRef.current) {
+             modalContentRef.current.classList.add("modal-content-open");
+            }
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("touchstart", handleClickOutside);
+        };
+    }, [isOpen, handleClose]);
+
+    if (!isOpen) return null;
+
+    return (
+        <ModalBackdrop ref={modalRef} className="modal-open">
+            <ModalContent ref={modalContentRef} className="modal-content-open">
+                <h2 className="text-3xl font-semibold mb-4 text-gray-900 text-center">
+                    {post.title.rendered}
+                </h2>
+                <div
+                    className="text-gray-700 flex justify-center w-[95%] mx-auto max-h-[70vh] overflow-y-auto"
+                    dangerouslySetInnerHTML={{ __html: post.content.rendered }}
+                />
+                <button
+                    onClick={handleClose}
+                    className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded-full p-1"
+                    aria-label="Close Modal"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                        />
+                    </svg>
+                </button>
+            </ModalContent>
+        </ModalBackdrop>
+    );
+};
+
 
 function Content({
-  posts,
-  categories,
-  selectedCategory,
-  handleCategoryClick,
+    posts,
+    categories,
+    selectedCategory,
+    handleCategoryClick,
+    handleOpenModal,
 }: {
-  posts: Post[];
-  categories: Category[];
-  selectedCategory: number | null;
-  handleCategoryClick: (categoryId: number | null) => void;
+    posts: Post[];
+    categories: Category[];
+    selectedCategory: number | null;
+    handleCategoryClick: (categoryId: number | null) => void;
+    handleOpenModal:(post:Post) => void;
 }) {
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+    const cardRefs = useRef<HTMLElement[]>([]);
 
-  const handleReadMoreClick = (post: Post) => {
-    setSelectedPost(post);
-    setIsModalOpen(true);
-  };
+    useEffect(() => {
+        if (cardRefs.current) {
+            cardRefs.current.forEach((card, index) => {
+                if (card) {
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, index * 200);
+                }
+            });
+        }
+    }, [posts, selectedCategory]);
 
-  const handleCloseModal = () => {
-    setSelectedPost(null);
-    setIsModalOpen(false);
-  };
+    const filteredPosts = selectedCategory
+        ? posts.filter((post) => post.categories.includes(selectedCategory))
+        : posts;
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.4, delay: i * 0.2, ease: "easeInOut" },
-    }),
-  };
-
-  const filteredPosts = selectedCategory
-    ? posts.filter((post) => post.categories.includes(selectedCategory))
-    : posts;
-
-  return (
-    <div className="container relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-      <div className="flex flex-col sm:flex-row items-center justify-between text-sm gap-4"></div>
-      <div className="h-[1px] bg-border w-full mb-8 mt-3"></div>
-      <div className="flex flex-col justify-between gap-6 lg:flex-row">
-        <h2 className="text-5xl font-medium lg:w-1/2">Projects</h2>
-        <div className="mx-20">
-          <p className="lg:w-1/2 text-bk break-words">
-            画像をクリックすると詳細がモーダルで表示されます
-          </p>
-        </div>
-      </div>
-      <div className="flex flex-wrap justify-start gap-4 mb-8">
-        <button
-          onClick={() => handleCategoryClick(null)}
-          className={`px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:border-blue-500 hover:text-blue-500 focus:outline-none ${
-            selectedCategory === null
-              ? "bg-blue-100 border-blue-500 text-blue-500"
-              : "bg-white text-gray-700" // 選択されていない時の背景色を追加
-          }`}
-        >
-          All
-        </button>
-        {categories.map((category) => (
-          <button
-            key={category.id}
-            onClick={() => handleCategoryClick(category.id)}
-            className={`px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:border-blue-500 hover:text-blue-500 focus:outline-none ${
-              selectedCategory === category.id
-                ? "bg-blue-100 border-blue-500 text-blue-500"
-                : "bg-white text-gray-700" // 選択されていない時の背景色を追加
-            }`}
-          >
-            {category.name}
-          </button>
-        ))}
-      </div>
-      <div className="mt-11 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredPosts.map((post, index) => (
-          <motion.div
-            key={post.id}
-            className="rounded-lg text-gray-900 dark:text-white shadow-sm bg-transparent w-full flex flex-col"
-            initial="hidden"
-            animate="visible"
-            variants={cardVariants}
-            custom={index}
-          >
-            {post._embedded &&
-              post._embedded["wp:featuredmedia"] &&
-              post._embedded["wp:featuredmedia"][0] && (
+    return (
+        <div className="container relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+            <div className="flex flex-col sm:flex-row items-center justify-between text-sm gap-4"></div>
+            <div className="h-[1px] bg-border w-full mb-8 mt-3"></div>
+            <div className="flex flex-col justify-between gap-6 lg:flex-row">
+                <h2 className="text-5xl font-medium lg:w-1/2">Projects</h2>
+                <div className="mx-20">
+                    <p className="lg:w-1/2 text-bk break-words">
+                        画像をクリックすると詳細が表示されます
+                    </p>
+                </div>
+            </div>
+            <div className="flex flex-wrap justify-start gap-4 mb-8">
                 <button
-                  onClick={() => handleReadMoreClick(post)}
-                  className="w-full relative aspect-square overflow-hidden rounded-lg"
+                    onClick={() => handleCategoryClick(null)}
+                    className={`px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:border-blue-500 hover:text-blue-500 focus:outline-none ${
+                        selectedCategory === null
+                            ? "bg-blue-100 border-blue-500 text-blue-500"
+                            : "bg-white text-gray-700"
+                    }`}
                 >
-                  <Image
-                    src={post._embedded["wp:featuredmedia"][0].source_url}
-                    alt={post.title.rendered}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    style={{ objectFit: "cover" }}
-                  />
+                    All
                 </button>
-              )}
-          </motion.div>
-        ))}
-      </div>
-      {selectedPost && (
-        <PostModal
-          post={selectedPost}
-          onClose={handleCloseModal}
-          isOpen={isModalOpen}
-        />
-      )}
-    </div>
-  );
+                {categories.map((category) => (
+                    <button
+                        key={category.id}
+                        onClick={() => handleCategoryClick(category.id)}
+                        className={`px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:border-blue-500 hover:text-blue-500 focus:outline-none ${
+                            selectedCategory === category.id
+                                ? "bg-blue-100 border-blue-500 text-blue-500"
+                                : "bg-white text-gray-700"
+                        }`}
+                    >
+                        {category.name}
+                    </button>
+                ))}
+            </div>
+            <div className="mt-11 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredPosts.map((post, index) => (
+                    <div
+                        key={post.id}
+                        className="rounded-lg text-gray-900 dark:text-white shadow-sm bg-transparent w-full flex flex-col transition-opacity duration-400 ease-in-out"
+                        style={{
+                            opacity: 0,
+                            transform: 'translateY(20px)',
+                            transition: 'opacity 0.4s ease, transform 0.4s ease',
+                         }}
+                         ref={(el) => {
+                            if (el) {
+                                cardRefs.current[index] = el;
+                            }
+                         }}
+                    >
+                        {post._embedded &&
+                            post._embedded["wp:featuredmedia"] &&
+                            post._embedded["wp:featuredmedia"][0] && (
+                                    <button
+                                        onClick={() => handleOpenModal(post)}
+                                        className="w-full relative aspect-square"
+                                    >
+                                    <Image
+                                        src={post._embedded["wp:featuredmedia"][0].source_url}
+                                        alt={post.title.rendered}
+                                        fill
+                                        className="object-cover rounded-lg"
+                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                        style={{ objectFit: "cover" }}
+                                    />
+                                </button>
+                            )}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
 }
 
 export default function ProjectsPage() {
-  const { posts, categories, loading, error } = useFetchWordPressPosts();
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+    const { posts, categories, loading, error } = useFetchWordPressPosts();
+    const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+    const backgroundRef = useRef<HTMLDivElement>(null);
+     const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
-  const handleCategoryClick = (categoryId: number | null) => {
-    setSelectedCategory(categoryId);
-  };
 
-  return (
-    <motion.section className="relative py-16 overflow-hidden">
-      <motion.div
-        style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 0 }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.7 }}
-        transition={{ duration: 1, ease: "easeInOut" }}
-      >
-        <Image
-          src="/1.png"
-          alt="背景画像"
-          fill
-          style={{ objectFit: "cover" }}
-          priority
-        />
-      </motion.div>
-      <Suspense fallback={<p>Loading content</p>}>
-        {!loading && !error && (
-          <Content
-            posts={posts}
-            categories={categories}
-            selectedCategory={selectedCategory}
-            handleCategoryClick={handleCategoryClick}
-          />
-        )}
-        {error && <p>Error:{error}</p>}
-      </Suspense>
-    </motion.section>
-  );
+     useEffect(() => {
+        if (backgroundRef.current) {
+            backgroundRef.current.style.opacity = '0.7';
+          }
+      },[]);
+
+
+    const handleCategoryClick = (categoryId: number | null) => {
+        setSelectedCategory(categoryId);
+    };
+
+    const handleOpenModal = (post: Post) => {
+        setSelectedPost(post);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedPost(null);
+    };
+
+    return (
+        <section className="relative py-16 overflow-hidden">
+            <div
+                ref={backgroundRef}
+                style={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    zIndex: 0,
+                    opacity: 0,
+                     transition: 'opacity 1s ease-in-out',
+                }}
+            >
+                <Image
+                    src="/1.png"
+                    alt="背景画像"
+                    fill
+                    style={{ objectFit: "cover" }}
+                    priority
+                />
+            </div>
+            <Suspense fallback={<p>Loading content</p>}>
+                {!loading && !error && (
+                    <Content
+                        posts={posts}
+                        categories={categories}
+                        selectedCategory={selectedCategory}
+                        handleCategoryClick={handleCategoryClick}
+                        handleOpenModal={handleOpenModal}
+                    />
+                )}
+                {error && <p>Error:{error}</p>}
+            </Suspense>
+              {selectedPost && (
+                    <PostModal
+                      post={selectedPost}
+                      onClose={handleCloseModal}
+                    />
+                )}
+        </section>
+    );
 }
