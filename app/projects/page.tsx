@@ -2,8 +2,8 @@
 
 import useFetchWordPressPosts from "@/app/useFetchWordPressPosts";
 import Image from "next/image";
-import { useState, useEffect, useRef, Suspense, useCallback } from "react";
-import styled from 'styled-components';
+import { useState, useEffect, useRef, Suspense } from "react";
+import { useRouter } from 'next/navigation';
 
 interface Post {
     id: number;
@@ -27,148 +27,6 @@ interface Category {
     name: string;
 }
 
-
-const ModalBackdrop = styled.div`
-    position: fixed;
-    inset: 0;
-    z-index: 999;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 5vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-
-    &.modal-open {
-        opacity: 1;
-        pointer-events: auto;
-    }
-`;
-
-const ModalContent = styled.div`
-    background-color: white;
-    border-radius: 0.5rem;
-    padding: 1.5rem;
-    width: 90vw;
-    max-height: 90vh;
-    position: relative;
-    max-width: 4xl;
-    overflow-y: auto;
-    transform: translateY(20px);
-    opacity: 0;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-
-    &.modal-content-open {
-        transform: translateY(0);
-        opacity: 1;
-    }
-`;
-
-const PostModal: React.FC<{ post: Post; onClose: () => void; }> = ({ post, onClose }) => {
-    const modalRef = useRef<HTMLDivElement>(null);
-    const modalContentRef = useRef<HTMLDivElement>(null);
-    const [isOpen, setIsOpen] = useState(true);
-
-    const handleClose = useCallback(() => {
-        if (modalRef.current) {
-            modalRef.current.classList.remove("modal-open");
-        }
-        if (modalContentRef.current) {
-            modalContentRef.current.classList.remove("modal-content-open");
-        }
-
-        const onTransitionEnd = () => {
-            setIsOpen(false);
-            onClose();
-            if(modalContentRef.current){
-              modalContentRef.current.removeEventListener('transitionend', onTransitionEnd);
-            }
-            document.body.style.overflow = "";
-        };
-
-        if(modalContentRef.current){
-           modalContentRef.current.addEventListener('transitionend', onTransitionEnd);
-         }
-    }, [setIsOpen, onClose]);
-
-
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent | TouchEvent) => {
-            if (!modalRef.current) return;
-            if (event.target instanceof Node) {
-                if (!modalRef.current.contains(event.target)) {
-                    handleClose();
-                } else if (
-                    (event.target as Element)?.closest?.(
-                        '[aria-label="Close Modal"]'
-                    )
-                ) {
-                    handleClose();
-                }
-            }
-        };
-
-        if (isOpen) {
-            document.addEventListener("mousedown", handleClickOutside);
-            document.addEventListener("touchstart", handleClickOutside);
-            document.body.style.overflow = "hidden";
-
-            if (modalRef.current) {
-                modalRef.current.classList.add("modal-open");
-             }
-
-            if(modalContentRef.current) {
-             modalContentRef.current.classList.add("modal-content-open");
-            }
-        }
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-            document.removeEventListener("touchstart", handleClickOutside);
-        };
-    }, [isOpen, handleClose]);
-
-    if (!isOpen) return null;
-
-    return (
-        <ModalBackdrop ref={modalRef} className="modal-open">
-            <ModalContent ref={modalContentRef} className="modal-content-open">
-                <h2 className="text-3xl font-semibold mb-4 text-gray-900 text-center">
-                    {post.title.rendered}
-                </h2>
-                <div
-                    className="text-gray-700 flex justify-center w-[95%] mx-auto max-h-[70vh] overflow-y-auto"
-                    dangerouslySetInnerHTML={{ __html: post.content.rendered }}
-                />
-                <button
-                    onClick={handleClose}
-                    className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded-full p-1"
-                    aria-label="Close Modal"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M6 18L18 6M6 6l12 12"
-                        />
-                    </svg>
-                </button>
-            </ModalContent>
-        </ModalBackdrop>
-    );
-};
-
-
 function Content({
     posts,
     categories,
@@ -180,7 +38,7 @@ function Content({
     categories: Category[];
     selectedCategory: number | null;
     handleCategoryClick: (categoryId: number | null) => void;
-    handleOpenModal:(post:Post) => void;
+    handleOpenModal: (post: Post) => void;
 }) {
     const cardRefs = useRef<HTMLElement[]>([]);
 
@@ -282,27 +140,22 @@ export default function ProjectsPage() {
     const { posts, categories, loading, error } = useFetchWordPressPosts();
     const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
     const backgroundRef = useRef<HTMLDivElement>(null);
-     const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+    const router = useRouter();
 
-
-     useEffect(() => {
+    useEffect(() => {
         if (backgroundRef.current) {
             backgroundRef.current.style.opacity = '0.7';
-          }
-      },[]);
-
+        }
+    }, []);
 
     const handleCategoryClick = (categoryId: number | null) => {
         setSelectedCategory(categoryId);
     };
 
     const handleOpenModal = (post: Post) => {
-        setSelectedPost(post);
+        router.push(`/projects/${post.id}`);
     };
 
-    const handleCloseModal = () => {
-        setSelectedPost(null);
-    };
 
     return (
         <section className="relative py-16 overflow-hidden">
@@ -316,7 +169,7 @@ export default function ProjectsPage() {
                     bottom: 0,
                     zIndex: 0,
                     opacity: 0,
-                     transition: 'opacity 1s ease-in-out',
+                    transition: 'opacity 1s ease-in-out',
                 }}
             >
                 <Image
@@ -339,12 +192,6 @@ export default function ProjectsPage() {
                 )}
                 {error && <p>Error:{error}</p>}
             </Suspense>
-              {selectedPost && (
-                    <PostModal
-                      post={selectedPost}
-                      onClose={handleCloseModal}
-                    />
-                )}
         </section>
     );
 }

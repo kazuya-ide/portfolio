@@ -1,18 +1,33 @@
-// app/blog/page.tsx
 'use client';
 
 import WordPressPostBlog from "@/app/WordpressPostBlog";
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 
 const BlogPage = () => {
+  const backgroundRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (backgroundRef.current) {
+            backgroundRef.current.style.opacity = '0.4';
+        }
+    }, []);
+    
   return (
-    <motion.section
-      className="relative py-16 overflow-hidden"
-    >
-      <motion.div
-        style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 0, opacity: 0.4 }}
-      >
+    <section className="relative py-16 overflow-hidden">
+      <div
+        ref={backgroundRef}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 0,
+            opacity: 0,
+           transition: 'opacity 1s ease-in-out', // CSSトランジションを追加
+          }}
+        >
         <Image
           src="/5.png"
           alt="背景画像"
@@ -20,11 +35,11 @@ const BlogPage = () => {
           style={{ objectFit: "cover" }}
           priority
         />
-      </motion.div>
-      <div className="container relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-        <WordPressPostBlog />
       </div>
-    </motion.section>
+      <div className="container relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+          <WordPressPostBlog />
+      </div>
+    </section>
   );
 };
 

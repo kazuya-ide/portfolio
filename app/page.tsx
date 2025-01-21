@@ -1,3 +1,4 @@
+// src/app/page.tsx
 "use client";
 import WordPressPosts from "./WordpressPosts";
 import SkillsSection from "@/app/components/SkillsSection";
@@ -6,6 +7,7 @@ import LineButton from "./components/LineButton";
 import ContactButton from "./components/ContactButton";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import SelfIntroduction from "./components/SelfIntroduction"; 
 
 export default function Home() {
   const backgroundRef = useRef<HTMLDivElement>(null);
@@ -40,12 +42,17 @@ export default function Home() {
         />
       </div>
       <div style={{ position: "relative", zIndex: 1 }}>
+   
         <AboutSection />
+        <SelfIntroduction />
         <SkillsSection />
         <WordPressPosts />
       </div>
+        
+       
       <LineButton lineId="@755gjcjk" />
       <ContactButton />
     </div>
+    
   );
 }
