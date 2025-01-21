@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import useSWR from 'swr';
 
 interface Post {
     id: number;
@@ -20,65 +20,42 @@ interface Post {
 }
 
 interface Category {
-  id: number;
-  name: string;
+    id: number;
+    name: string;
 }
-const useFetchWordPressPosts = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-    const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-      const fetchPosts = async () => {
-          try {
-              const apiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL;
-              if (!apiUrl) {
-                  setError('WordPress API URLが設定されていません。');
-                  setLoading(false);
-                  return;
-              }
-                // const apiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL + '/alternative_path'; // API URLを変更
-                // const categoriesResponse = await fetch(`${apiUrl}/wp/v2/categories?per_page=5`); // 取得するカテゴリの数を変更
-                const categoriesResponse = await fetch(`${apiUrl}/wp/v2/categories`);
-              if (!categoriesResponse.ok) {
-                 throw new Error(`カテゴリAPIリクエストに失敗しました: ${categoriesResponse.status}`);
-                }
-             const categoriesData = await categoriesResponse.json() as Category[];
-                setCategories(categoriesData);
+const fetcher = (url: string) =>
+    fetch(url).then(async (res) => {
+        const totalPages = res.headers.get('X-WP-TotalPages');
+        const data = await res.json();
+        return { data, totalPages };
+    });
 
-              const response = await fetch(
-                  `${apiUrl}/wp/v2/posts?_embed`
-                   // `${apiUrl}/wp/v2/posts?_embed&per_page=5` // 取得する記事の数を変更
-                  //  `${apiUrl}/wp/v2/posts?_embed&_fields=id,title,content` // 取得するフィールドを変更
-              );
-              if (!response.ok) {
-                  throw new Error(`APIリクエストに失敗しました: ${response.status}`);
-              }
-              const data = await response.json() as Post[];
+interface FetchOptions {
+    perPage?: number;
+    page?: number;
+}
+const useFetchWordPressPosts = (options: FetchOptions = {}) => {
+    const { perPage = 10, page = 1 } = options;
+    const apiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL;
 
-              //カテゴリを配列に格納
-              const postsWithCategories = data.map(post => ({
-                ...post,
-                categories: post.categories
-             }));
-                setPosts(postsWithCategories);
-                // setPosts([]); // 空の配列を返す
-          } catch (err: unknown) {
-              if (err instanceof Error) {
-                  setError(err.message || 'データの取得に失敗しました。');
-              } else {
-                  setError('データの取得に失敗しました.(不明なエラー)');
-              }
-          } finally {
-              setLoading(false);
-          }
-      };
+    const { data: categoriesData, error: categoriesError } = useSWR(
+        apiUrl ? `${apiUrl}/wp/v2/categories` : null,
+        fetcher
+    );
+    const { data: postsData, error: postsError, isLoading, mutate } = useSWR(
+        apiUrl ? `${apiUrl}/wp/v2/posts?_embed&per_page=${perPage}&page=${page}` : null,
+        fetcher
+    );
 
-      fetchPosts();
-  }, []);
+    const categories = categoriesData?.data as Category[] || [];
+    const posts = postsData?.data as Post[] || [];
+    const loading = isLoading;
+    const error = postsError || categoriesError;
+    const totalPages = postsData?.totalPages ? Number(postsData.totalPages) : null;
+    const nextPage = () => mutate();
 
-    return {posts, categories, loading, error};
+    return { posts, categories, loading, error, mutate, totalPages, nextPage };
 };
 
 export default useFetchWordPressPosts;

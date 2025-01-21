@@ -25,7 +25,7 @@ interface Post {
 
 const WordPressPosts = () => {
     const [displayedCount, setDisplayedCount] = useState(6);
-    const { posts, loading, error } = useFetchWordPressPosts(); // ジェネリック型を削除
+     const { posts, loading, error } = useFetchWordPressPosts({perPage: displayedCount });
     const cardRefs = useRef<HTMLElement[]>([]);
 
     const handleResize = useCallback(() => {
@@ -46,14 +46,10 @@ const WordPressPosts = () => {
 
 
     useEffect(() => {
-        if (posts && posts.length > 0) {
-            if (posts.length <= 6) {
-                setDisplayedCount(posts.length);
-            } else {
-                handleResize();
-            }
-        }
-    }, [posts, handleResize]);
+     
+            handleResize();
+      
+    }, [handleResize]);
 
 
     useEffect(() => {
@@ -67,7 +63,7 @@ const WordPressPosts = () => {
                  }
              });
          }
-    }, [displayedCount, posts]);
+    }, [posts]);
 
     if (loading) {
         return <p>Loading...</p>;
@@ -77,8 +73,7 @@ const WordPressPosts = () => {
         return <p>Error: {error}</p>;
     }
 
-    const displayedPosts = posts?.slice(0, displayedCount) || [];
-    const hasMore = posts ? posts.length > displayedCount : false;
+    const hasMore = posts.length > displayedCount;
 
 
     return (
@@ -95,7 +90,7 @@ const WordPressPosts = () => {
                     </p>
                 </div>
                 <div className="mt-11 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {displayedPosts?.map((post: Post, index: number) => (
+                    {posts?.map((post: Post, index: number) => (
                         <div
                             key={post.id}
                             className="rounded-lg text-black shadow-sm bg-transparent w-full flex flex-col overflow-hidden"

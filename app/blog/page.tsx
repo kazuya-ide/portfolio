@@ -3,9 +3,12 @@
 import WordPressPostBlog from "@/app/WordpressPostBlog";
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
+import useFetchWordpressBlog from '@/app/useFetchWordpressBlog';
+
 
 const BlogPage = () => {
   const backgroundRef = useRef<HTMLDivElement>(null);
+    const { posts, loading, error } = useFetchWordpressBlog();
 
     useEffect(() => {
         if (backgroundRef.current) {
@@ -37,7 +40,7 @@ const BlogPage = () => {
         />
       </div>
       <div className="container relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <WordPressPostBlog />
+         <WordPressPostBlog posts={posts} loading={loading} error={error}  />
       </div>
     </section>
   );

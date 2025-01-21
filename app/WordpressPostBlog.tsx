@@ -2,12 +2,36 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import useFetchWordpressBlog from './useFetchWordpressBlog'; // フックをインポート
+// import useFetchWordpressBlog from './useFetchWordpressBlog';
 
-// interface WordPressPostBlogProps {} // 削除
+interface Post { // eslint-disable-line @typescript-eslint/no-unused-vars
+    id: number;
+    title: {
+        rendered: string;
+    };
+    content: {
+        rendered: string;
+    };
+    featured_media: number;
+     _embedded?: {
+            'wp:featuredmedia'?: {
+              source_url: string;
+          }[] | undefined
+        } | undefined;
+}
+//インターフェースを削除
+// interface Category {
+//   id: number;
+//  name: string;
+// }
+interface WordPressPostBlogProps {
+   posts: Post[];
+   loading: boolean;
+    error: string | null;
+}
 
-const WordPressPostBlog: React.FC = () => {
-    const { posts, loading, error } = useFetchWordpressBlog(); // フックを使用
+const WordPressPostBlog: React.FC<WordPressPostBlogProps> = ({posts, loading, error}) => {
+   
 
     if (loading) {
         return <p>Loading...</p>;
@@ -16,7 +40,6 @@ const WordPressPostBlog: React.FC = () => {
     if (error) {
         return <p>Error: {error}</p>;
     }
-
 
     const hasMore = posts.length > 0;
 

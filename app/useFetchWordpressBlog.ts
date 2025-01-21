@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import useSWR from 'swr';
 
 interface Post {
     id: number;
@@ -24,57 +24,26 @@ interface Category {
     name: string;
 }
 
+const fetcher = (url: string) => fetch(url).then(res => res.json());
+
 const useFetchWordpressBlog = () => {
-    const [posts, setPosts] = useState<Post[]>([]);
-    const [categories, setCategories] = useState<Category[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const apiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL;
 
-    useEffect(() => {
-        const fetchBlogPosts = async () => {
-            try {
-                 const apiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL;
-                 if (!apiUrl) {
-                    setError('WordPress API URLが設定されていません。');
-                     setLoading(false);
-                     return;
-                 }
+    const { data: categoriesData, error: categoriesError } = useSWR(
+        apiUrl ? `${apiUrl}/wp/v2/categories` : null,
+        fetcher
+    );
 
-                const categoriesResponse = await fetch(`${apiUrl}/wp/v2/categories`);
-                 if (!categoriesResponse.ok) {
-                    throw new Error(`カテゴリAPIリクエストに失敗しました: ${categoriesResponse.status}`);
-                 }
-                const categoriesData = await categoriesResponse.json() as Category[];
-                setCategories(categoriesData);
+    const { data: postsData, error: postsError, isLoading } = useSWR(
+         apiUrl ? `${apiUrl}/wp/v2/blog?_embed` : null,
+        fetcher
+    );
 
-                const response = await fetch(
-                     `${apiUrl}/wp/v2/blog?_embed` // 投稿エンドポイントを/wp/v2/blogに変更
-                );
 
-                if (!response.ok) {
-                    throw new Error(`APIリクエストに失敗しました: ${response.status}`);
-                }
-
-                const data = await response.json() as Post[];
-                   const postsWithCategories = data.map(post => ({
-                     ...post,
-                     categories: post.categories
-                  }));
-                setPosts(postsWithCategories);
-
-            } catch (err: unknown) {
-                if (err instanceof Error) {
-                    setError(err.message || 'データの取得に失敗しました。');
-                } else {
-                    setError('データの取得に失敗しました.(不明なエラー)');
-                }
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchBlogPosts();
-    }, []);
+    const categories = categoriesData as Category[] || [];
+    const posts = postsData as Post[] || [];
+    const loading = isLoading;
+    const error = postsError || categoriesError;
 
     return { posts, categories, loading, error };
 };

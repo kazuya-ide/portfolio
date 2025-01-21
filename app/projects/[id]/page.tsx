@@ -1,8 +1,8 @@
 'use client';
-import { useParams } from 'next/navigation'; // useRouterを削除
-import useFetchWordPressPosts from '@/app/useFetchWordPressPosts';
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
+
+import { useParams } from 'next/navigation';
+import useSWR from 'swr';
+
 
 interface Post {
     id: number;
@@ -21,53 +21,41 @@ interface Post {
     categories: number[];
 }
 
+const fetcher = (url: string) => fetch(url).then(res => res.json());
+
 const ProjectPage = () => {
-    const { posts, loading, error } = useFetchWordPressPosts();
-    const [post, setPost] = useState<Post|null>(null);
     const params = useParams();
     const id = params.id as string;
+    const apiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL;
 
-    useEffect(() => {
-        if (posts && id) {
-           const foundPost = posts.find(p => p.id === Number(id));
-            setPost(foundPost || null);
-       }
-   },[posts, id]);
+    const { data: post, error, isLoading } = useSWR<Post>(
+        apiUrl ? `${apiUrl}/wp/v2/posts/${id}?_embed` : null,
+        fetcher
+    );
 
-
-    if (loading) {
+    if (isLoading) {
         return <p>Loading...</p>;
     }
 
     if (error) {
         return <p>Error: {error}</p>;
     }
-      if(!post){
-           return <p>Not found post.</p>
-       }
+    
+    if(!post){
+        return <p>Not found post.</p>
+      }
 
 
     return (
         <div className="container max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <h1 className="text-3xl font-semibold mb-4">
                 {post.title.rendered}
-           </h1>
+            </h1>
             <div
-                 className="text-gray-700 max-w-3xl mx-auto"
+                className="text-gray-700 max-w-3xl mx-auto"
                 dangerouslySetInnerHTML={{ __html: post.content.rendered }}
             />
-           {post._embedded && post._embedded["wp:featuredmedia"] && post._embedded["wp:featuredmedia"][0] && (
-                 <div className="w-full relative aspect-square">
-                    <Image
-                        src={post._embedded["wp:featuredmedia"][0].source_url}
-                         alt={post.title.rendered}
-                           fill
-                            className="object-cover"
-                             sizes="(max-width: 768px) 100vw, 33vw"
-                        />
-                   </div>
-             )}
-         </div>
+        </div>
     );
 };
 

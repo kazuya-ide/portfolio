@@ -142,6 +142,7 @@ export default function ProjectsPage() {
     const backgroundRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
 
+
     useEffect(() => {
         if (backgroundRef.current) {
             backgroundRef.current.style.opacity = '0.7';
@@ -153,9 +154,8 @@ export default function ProjectsPage() {
     };
 
     const handleOpenModal = (post: Post) => {
-        router.push(`/projects/${post.id}`);
+         router.push(`/projects/${post.id}`);
     };
-
 
     return (
         <section className="relative py-16 overflow-hidden">
@@ -169,7 +169,7 @@ export default function ProjectsPage() {
                     bottom: 0,
                     zIndex: 0,
                     opacity: 0,
-                    transition: 'opacity 1s ease-in-out',
+                     transition: 'opacity 1s ease-in-out',
                 }}
             >
                 <Image
