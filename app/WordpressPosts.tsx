@@ -25,7 +25,7 @@ interface Post {
 
 const WordPressPosts = () => {
     const [displayedCount, setDisplayedCount] = useState(6);
-     const { posts, loading, error } = useFetchWordPressPosts({perPage: displayedCount });
+    const { posts, loading, error } = useFetchWordPressPosts(); // ジェネリック型を削除
     const cardRefs = useRef<HTMLElement[]>([]);
 
     const handleResize = useCallback(() => {
@@ -46,10 +46,14 @@ const WordPressPosts = () => {
 
 
     useEffect(() => {
-     
-            handleResize();
-      
-    }, [handleResize]);
+        if (posts && posts.length > 0) {
+            if (posts.length <= 6) {
+                setDisplayedCount(posts.length);
+            } else {
+                handleResize();
+            }
+        }
+    }, [posts, handleResize]);
 
 
     useEffect(() => {
@@ -63,7 +67,7 @@ const WordPressPosts = () => {
                  }
              });
          }
-    }, [posts]);
+    }, [displayedCount, posts]);
 
     if (loading) {
         return <p>Loading...</p>;
@@ -73,7 +77,8 @@ const WordPressPosts = () => {
         return <p>Error: {error}</p>;
     }
 
-    const hasMore = posts.length > displayedCount;
+    const displayedPosts = posts?.slice(0, displayedCount) || [];
+    const hasMore = posts ? posts.length > displayedCount : false;
 
 
     return (
@@ -85,12 +90,10 @@ const WordPressPosts = () => {
                 <div className="flex flex-col justify-between gap-6 lg:flex-row">
                     <h2 className="text-3xl font-medium lg:w-1/2 text-black">Project</h2>
 
-                    <p className="lg:w-1/2  break-words text-black">
-                       画像をクリックすると詳細が表示されます
-                    </p>
+                    
                 </div>
                 <div className="mt-11 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {posts?.map((post: Post, index: number) => (
+                    {displayedPosts?.map((post: Post, index: number) => (
                         <div
                             key={post.id}
                             className="rounded-lg text-black shadow-sm bg-transparent w-full flex flex-col overflow-hidden"

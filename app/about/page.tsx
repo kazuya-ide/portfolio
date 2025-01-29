@@ -4,7 +4,9 @@ import { useRef, useEffect, useState, useLayoutEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { FaTwitter, FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
+import LineButton from "../components/LineButton";
+
 
 const AboutPage = () => {
   const aboutRef = useRef<HTMLDivElement | null>(null);
@@ -73,15 +75,19 @@ const AboutPage = () => {
 
   return (
     <div className="relative">
-      <motion.section
-        className="fixed inset-0 overflow-hidden z-0"
+       <motion.div
+        className="fixed inset-0 z-0 overflow-hidden"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        suppressHydrationWarning={true}
+          suppressHydrationWarning={true}
+        style={{
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        }}
+
       >
         <motion.div
-          className="absolute inset-0 z-0 opacity-50" // opacity-20 を追加
+          className="absolute inset-0 z-0"
         >
             <Image
               src="/2.png"
@@ -89,22 +95,23 @@ const AboutPage = () => {
               fill
               style={{ objectFit: "cover" }}
               priority
+              className="opacity-50"
             />
         </motion.div>
-      </motion.section>
+      </motion.div>
       <div
-        className="container relative max-w-7xl mx-auto py-16 text-gray-900 text-center z-10"
+        className="container relative max-w-7xl mx-auto py-16 text-white text-center z-10"
         ref={aboutRef}
       >
         <motion.h2
-          className="text-3xl font-bold mb-8 text-gray-900"
+          className="text-3xl font-bold mb-8 text-white"
           variants={textVariants}
         >
           自己紹介
         </motion.h2>
         <div className="mb-8">
           <motion.p
-            className="text-gray-900 mb-4"
+            className="text-white mb-4"
             variants={textVariants}
           >
             はじめまして、井手和弥と申します。
@@ -112,17 +119,17 @@ const AboutPage = () => {
             Web開発者として、主にフロントエンド開発を担当しています。
           </motion.p>
           <motion.p
-            className="text-gray-900 mb-4"
+            className="text-white mb-4"
             variants={textVariants}
           >
             特に、React、Next.js を用いた開発が好きで、UI/UX デザインにも興味があります。
             <br />
             このサイトもnext.jsとvercelを使ってwordpressから投稿を更新できるように設計しました。
             <br />
-            ユーザーにとって使いやすいウェブサイトを制作することに情熱を燃やしています。
+            ユーザーにとって使いやすいウェブサイトを制作することを念頭に置いております。
           </motion.p>
           <motion.p
-            className="text-gray-900 mb-4"
+            className="text-white mb-4"
             variants={textVariants}
           >
             WordPress を使用した開発経験もあり、お客様のニーズに合わせたウェブサイト構築が可能です。
@@ -131,17 +138,17 @@ const AboutPage = () => {
           </motion.p>
         </div>
         <motion.h3
-          className="text-2xl font-bold mb-4 text-gray-900"
+          className="text-2xl font-bold mb-4 text-white"
           variants={textVariants}
         >
           主なスキル
         </motion.h3>
         <motion.ul
-          className="text-gray-900 mb-8 pl-6 list-none"
+          className="text-white mb-8 pl-6 list-none"
           variants={textVariants}
         >
           {[
-            "JavaScript (ES6+)",
+            "JavaScript",
             "TypeScript",
             "React",
             "Next.js",
@@ -155,7 +162,7 @@ const AboutPage = () => {
               key={skill}
               variants={listItemVariants}
               custom={index}
-              className="py-2 border-b border-gray-300  hover:bg-gray-100 transition-colors duration-200 inline-block text-gray-900"
+               className="py-2 border-b border-gray-300  hover:bg-gray-100 transition-colors duration-200 inline-block text-white"
               style={{ padding: "0 10px", width: "fit-content" }}
             >
               {skill}
@@ -163,20 +170,20 @@ const AboutPage = () => {
           ))}
         </motion.ul>
         <motion.h3
-          className="text-2xl font-bold mb-4 text-gray-900"
+          className="text-2xl font-bold mb-4 text-white"
           variants={textVariants}
         >
           今後の目標
         </motion.h3>
         <motion.p
-          className="text-gray-900 mb-4"
+          className="text-white mb-4"
           variants={textVariants}
         >
           今後は、バックエンド技術にも挑戦し、より幅広い開発ができるようにスキルアップを目指しています。
-          <br /> また、チームでの開発経験を増やし、より高品質なウェブサイトを提供できるように努めてまいります。
+          <br /> また、チームでの開発を出来るようにgithubのブランチ等の勉強を進めて、より高品質なウェブサイトを提供できるようにしたいです。
         </motion.p>
         <motion.p
-          className="text-gray-900 mb-4"
+          className="text-white mb-4"
           variants={textVariants}
         >
           もし何かご質問やご依頼などございましたら、お気軽にお問い合わせください。
@@ -185,19 +192,12 @@ const AboutPage = () => {
           className="mt-4 flex items-center justify-center"
           variants={textVariants}
         >
-          <Link href="#" className="mr-4 hover:text-blue-500">
-            <FaTwitter size={24} />
-            <span className="sr-only">Twitter</span>
-          </Link>
-          <Link href="#" className="mr-4 hover:text-blue-500">
-            <FaGithub size={24} />
-            <span className="sr-only">GitHub</span>
-          </Link>
-          <Link href="#" className="hover:text-blue-500">
-            <FaLinkedin size={24} />
-            <span className="sr-only">LinkedIn</span>
-          </Link>
+            <Link href="https://github.com/kazuya-ide" className="mr-4 hover:text-blue-500">
+                <FaGithub size={24} color="white" />
+                <span className="sr-only">GitHub</span>
+            </Link>
         </motion.div>
+        <LineButton lineId="@755gjcjk" />
       </div>
     </div>
   );

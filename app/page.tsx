@@ -1,58 +1,42 @@
-// src/app/page.tsx
 "use client";
 import WordPressPosts from "./WordpressPosts";
 import SkillsSection from "@/app/components/SkillsSection";
 import AboutSection from "@/app/components/AboutSection";
 import LineButton from "./components/LineButton";
 import ContactButton from "./components/ContactButton";
-import Image from "next/image";
-import { useEffect, useRef } from "react";
-import SelfIntroduction from "./components/SelfIntroduction"; 
+import SelfIntroduction from "./components/SelfIntroduction";
 
 export default function Home() {
-  const backgroundRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-      if (backgroundRef.current) {
-        backgroundRef.current.style.opacity = '0.8';
-      }
-    }, []);
-
-  return (
-    <div style={{ position: 'relative' }}>
-      <div
-         ref={backgroundRef}
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: -1,
-          opacity: 0,
-          transition: 'opacity 1s ease-in-out',
-        }}
-      >
-        <Image
-          src="/4.png"
-          alt="背景画像"
-          fill
-          style={{ objectFit: "cover" }}
-          priority
-        />
-      </div>
-      <div style={{ position: "relative", zIndex: 1 }}>
-   
-        <AboutSection />
-        <SelfIntroduction />
-        <SkillsSection />
-        <WordPressPosts />
-      </div>
-        
-       
-      <LineButton lineId="@755gjcjk" />
-      <ContactButton />
-    </div>
-    
-  );
+    return (
+        <div
+            style={{
+                 position: 'relative',
+                 minHeight: '100vh',
+                 overflowX: 'hidden', // 水平スクロールを防止
+            }}
+        >
+             <div
+                style={{
+                    backgroundImage: 'url(/4.png)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                    position: 'fixed', // スクロールに追従しないように固定
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 0, // コンテンツより背面に配置
+                }}
+            ></div>
+          <div style={{position:'relative', zIndex:1}}>
+              <AboutSection />
+            <SelfIntroduction />
+              <SkillsSection />
+            <WordPressPosts />
+            <LineButton lineId="@755gjcjk" />
+            <ContactButton />
+          </div>
+        </div>
+    );
 }

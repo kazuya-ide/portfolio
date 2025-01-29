@@ -7,19 +7,19 @@ const SkillsSection = () => {
   const skills = [
     {
       name: "JavaScript",
-      level: 90,
+      level: 80,
       icon: <FaJs size={30} />,
       category: "フロントエンド"
     },
     {
       name: "React",
-      level: 85,
+      level: 70,
       icon: <FaReact size={30} />,
       category: "フロントエンド"
     },
     {
       name: "Next.js",
-      level: 85,
+      level: 80,
       icon: <SiNextdotjs size={30} />,
       category: "フロントエンド"
     },
@@ -43,7 +43,7 @@ const SkillsSection = () => {
     },
     {
       name: "Node.js",
-      level: 60,
+      level: 50,
       icon: <FaServer size={30} />,
       category: "バックエンド"
     },
