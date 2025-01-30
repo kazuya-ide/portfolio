@@ -13,7 +13,7 @@ const defaultProps: SelfIntroductionProps = {
   name: "kazuya ide",
   jobTitle: "クリエイター",
   introduction:
-    "Webサイト制作、デザイン、ロゴ作成、画像生成AI（Stable Diffusion）など。現在はwbサイト作成に注力しています。このサイトはnextjs,vercelで作成しました。コーディングはtailwindcss",
+    "Webサイト制作、デザイン、ロゴ作成、画像生成AI（Stable Diffusion）など。現在はwbサイト作成に注力しています。このサイトはnextjs,vercelでAIを使用しながら作成しました。コーディングはtailwindcss",
   imageUrl: "/ファビコン48.jpg",
 };
 
