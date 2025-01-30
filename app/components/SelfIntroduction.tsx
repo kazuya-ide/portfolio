@@ -21,10 +21,10 @@ const SelfIntroduction: React.FC<SelfIntroductionProps> = (props) => {
   const { name, jobTitle, introduction, imageUrl } = { ...defaultProps, ...props };
 
   const skills = [
-    { name: "Webサイト制作　wordpress react tailwindcss　でのコーディング scssは触ったことがありません", icon: <FaLaptopCode className="mr-2 text-blue-500" /> },
-    { name: "Webデザイン 勉強中です", icon: <FaPalette className="mr-2 text-purple-500" /> },
+    { name: "Webサイト制作　wordpress react tailwindcss　でのコーディング ", icon: <FaLaptopCode className="mr-2 text-blue-500" /> },
+    { name: "Webデザイン Photoshop,Figmaで作成デザイン勉強中です", icon: <FaPalette className="mr-2 text-purple-500" /> },
     { name: "ロゴ作成　SDとイラレ、フォトショで加工できます", icon: <FaFont className="mr-2 text-green-500" /> },
-    { name: "画像生成AI (Stable Diffusion)　マシンパワーでサンプルを多く出せます　RTX4090", icon: <FaMagic className="mr-2 text-red-500" /> },
+    { name: "画像生成AI (Stable Diffusion)　サンプル画像などprojectに載せています　", icon: <FaMagic className="mr-2 text-red-500" /> },
   ];
 
   return (
