@@ -65,9 +65,11 @@ const WordPressPostBlog: React.FC<WordPressPostBlogProps> = ({posts, loading, er
                 </div>
                 <div data-orientation="horizontal" role="none" className="shrink-0 bg-border h-[1px] w-full mb-8 mt-3"></div>
                 <div className="flex flex-col justify-between gap-6 md:flex-row">
-                    <h2 className="text-3xl font-medium md:w-1/2 text-black">ブログ記事でできること</h2>
+                    <h2 className="text-3xl font-medium md:w-1/2 text-black">Next,jsを利用したHPの作成ブログ</h2>
                     <p className="md:w-1/2 text-black">
-                    ブログでは、ウェブサイト制作に関する様々な情報を個人の振り返りメモのように記事にしています
+                    開発環境：tailwindcss,typescript,github,vercel,wordpress,gemini
+                    <br/>
+                    個人で勉強したことをブログ形式でメモしていきます。
                     
                     </p>
                 </div>

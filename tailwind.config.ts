@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
-export default {
+const config: Config = {
+  darkMode: 'class', // 'media' or 'class'
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -20,10 +21,12 @@ export default {
           },
         },
       },
-        animation: {
-            "fade-in-up": "fade-in-up 0.6s ease-out forwards",
-        }
+      animation: {
+        "fade-in-up": "fade-in-up 0.6s ease-out forwards",
+      }
     },
   },
   plugins: [],
-} satisfies Config;
+}
+
+export default config;
