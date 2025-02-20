@@ -2,9 +2,8 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-// import useFetchWordpressBlog from './useFetchWordpressBlog';
 
-interface Post { // eslint-disable-line @typescript-eslint/no-unused-vars
+interface Post {
     id: number;
     title: {
         rendered: string;
@@ -19,11 +18,7 @@ interface Post { // eslint-disable-line @typescript-eslint/no-unused-vars
           }[] | undefined
         } | undefined;
 }
-//インターフェースを削除
-// interface Category {
-//   id: number;
-//  name: string;
-// }
+
 interface WordPressPostBlogProps {
    posts: Post[];
    loading: boolean;
@@ -55,13 +50,13 @@ const WordPressPostBlog: React.FC<WordPressPostBlogProps> = ({posts, loading, er
         <section className="py-32">
             <div className="container max-w-7xl mx-auto">
                 <div className="flex items-center justify-between text-sm">
-                     <a href="#" className="hover:text-gray-800 hover:underline">もっと見る
+                     <Link href="/blog" className="hover:text-gray-800 hover:underline">もっと見る
                         <svg xmlns="http://www.w3.org/2000/svg"
                         width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
                         strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-right ml-2 inline-block size-4">
                         <path d="m9 18 6-6-6-6"></path>
                         </svg>
-                        </a>
+                        </Link>
                 </div>
                 <div data-orientation="horizontal" role="none" className="shrink-0 bg-border h-[1px] w-full mb-8 mt-3"></div>
                 <div className="flex flex-col justify-between gap-6 md:flex-row">
