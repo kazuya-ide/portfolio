@@ -86,7 +86,7 @@ const WordPressPosts = () => {
             <div className="container max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col sm:flex-row items-center justify-between text-sm gap-4">
                 </div>
-                <div className="h-[1px] bg-border w-full mb-8 mt-3"></div>
+                <div className="h-[1px] bg-transparent w-full mb-8 mt-3"></div>
                 <div className="flex flex-col justify-between gap-6 lg:flex-row">
                     <h2 className="text-3xl font-medium lg:w-1/2 text-black">Project</h2>
 

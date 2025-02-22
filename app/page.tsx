@@ -35,6 +35,7 @@ export default function Home() {
               <SkillsSection />
             <WordPressPosts />
             <LineButton lineId="@755gjcjk" />
+            
             <ContactButton />
           </div>
         </div>
