@@ -2,8 +2,7 @@ import HandWrittenTitleDemo from '../components/demo/tegaki'
 import HandWrittenTitle1 from '../components/demo/HandWrittenTitleDemo'
 
 import SparklesPreview from '@/app/components/demo/hosikuzu'
-import BackgroundBoxesDemo  from '@/app/components/demo/bkblockanimation'
-import DemoHeroGeometric from '@/app/components/demo/bg-shape'
+
 import TimelineDemo from '../components/demo/timeline'
 
 
@@ -22,10 +21,10 @@ export default function Home() {
 
     <TimelineDemo/>
 
-   <DemoHeroGeometric/>
+
 
 <SparklesPreview />
-<BackgroundBoxesDemo/>
+
 
 <HandWrittenTitleDemo/>
 <HandWrittenTitle1/>
