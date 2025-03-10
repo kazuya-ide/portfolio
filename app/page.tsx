@@ -30,6 +30,9 @@ export default function Home() {
                 }}
             ></div>
           <div style={{position:'relative', zIndex:1}}>
+
+   
+
               <AboutSection />
             <SelfIntroduction />
               <SkillsSection />
