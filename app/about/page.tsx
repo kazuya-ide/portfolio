@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
-import LineButton from "../components/LineButton";
 
 
 const AboutPage = () => {
@@ -197,7 +196,7 @@ const AboutPage = () => {
                 <span className="sr-only">GitHub</span>
             </Link>
         </motion.div>
-        <LineButton lineId="@755gjcjk" />
+   
       </div>
     </div>
   );

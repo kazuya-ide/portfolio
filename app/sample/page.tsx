@@ -1,8 +1,6 @@
-import HandWrittenTitleDemo from '../components/demo/tegaki'
+
 import HandWrittenTitle1 from '../components/demo/HandWrittenTitleDemo'
-
 import SparklesPreview from '@/app/components/demo/hosikuzu'
-
 import TimelineDemo from '../components/demo/timeline'
 
 
@@ -19,17 +17,19 @@ export default function Home() {
         Go to sample/actios/page
     </Link>
 
+<SparklesPreview />
+    <HandWrittenTitle1/>
     <TimelineDemo/>
 
 
 
-<SparklesPreview />
 
 
-<HandWrittenTitleDemo/>
-<HandWrittenTitle1/>
 
 
+
+
+       
    </div>
   );
 }

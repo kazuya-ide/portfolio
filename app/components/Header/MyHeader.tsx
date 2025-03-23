@@ -41,9 +41,7 @@ const Header = () => {
           <Link href="/sample" className={`py-2 px-4 text-black hover:text-blue-500  transition-colors duration-300 ${pathname === '/sample' ? 'text-gray-900' : ''}`}>
             Sample
           </Link>
-          <Link href="/contact" className={`py-2 px-4 text-black hover:text-blue-500  transition-colors duration-300 ${pathname === '/contact' ? 'text-gray-900' : ''}`}>
-            Contact
-          </Link>
+         
         </nav>
         <div className={`absolute top-1 right-1 flex items-center gap-4`}>
           <button
@@ -93,9 +91,7 @@ const Header = () => {
             <Link href="/sample" className="py-2 px-4 text-black hover:text-blue-500  transition-colors duration-300 text-xl">
               Sample
             </Link>
-            <Link href="/contact" className="py-2 px-4 text-black hover:text-blue-500 transition-colors duration-300 text-xl">
-              Contact
-            </Link>
+          
           </nav>
         </div>
       </div>

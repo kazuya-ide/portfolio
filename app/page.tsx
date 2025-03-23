@@ -2,9 +2,9 @@
 import WordPressPosts from "./WordpressPosts";
 import SkillsSection from "@/app/components/SkillsSection";
 import AboutSection from "@/app/components/AboutSection";
-import LineButton from "./components/LineButton";
-import ContactButton from "./components/ContactButton";
 import SelfIntroduction from "./components/SelfIntroduction";
+
+
 
 export default function Home() {
     return (
@@ -32,14 +32,11 @@ export default function Home() {
           <div style={{position:'relative', zIndex:1}}>
 
    
-
               <AboutSection />
             <SelfIntroduction />
               <SkillsSection />
             <WordPressPosts />
-            <LineButton lineId="@755gjcjk" />
-            
-            <ContactButton />
+          
           </div>
         </div>
     );
